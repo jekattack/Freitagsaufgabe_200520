@@ -11,40 +11,53 @@
 
 
 public class PasswordValidation {
-
-    public static void main(String[] args) {
-
-    }
     public static String check(String input) {
         int securityLevelCounter = 0;
         char[] inputArr = input.toCharArray();
 
-        System.out.println("Test für folgendes Passwort: \n" + input);
+        boolean isLongEnough = PasswordValidation.checkLength(inputArr);
+        boolean containsNumber = PasswordValidation.checkSpecialChars(inputArr);
+        boolean containsUpperLowerCase = PasswordValidation.checkUpperLowerCase(inputArr);
 
-        //Ist länger als 10 Zeichen? -->
-        boolean isLongEnough = false;
-        if (inputArr.length >= 10) {
-            isLongEnough = true;
-            securityLevelCounter++;
-        } else {
-            System.out.println("Dein Passwort ist nicht lang genug");
+        if(isLongEnough)securityLevelCounter++;
+        if(containsNumber)securityLevelCounter++;
+        if(containsUpperLowerCase)securityLevelCounter++;
+
+        return checkSecurityLevel(securityLevelCounter);
+
+    }
+
+    public static String[][] check(String[] input){
+
+        String[][] result = new String[input.length][2];
+
+        for(int i=0; i < input.length; i++){
+            result[i][0] = input[i];
+            result[i][1] = PasswordValidation.check(input[i]);
         }
 
-        //Enthält Zahl? -->
+        return result;
 
-        boolean containsNumber = false;
+    }
+
+    private static boolean checkLength(char[] inputArr){
+        if (inputArr.length >= 10) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean checkSpecialChars(char[] inputArr){
         for(int i = 0; i < inputArr.length; i++){
             if(!Character.isLetter(inputArr[i])){
-                containsNumber = true;
+                return true;
             }
         }
-        if (containsNumber) {
-            securityLevelCounter++;
-        } else {
-            System.out.println("Ergänze mind. eine Zahl und/oder Sonderzeichen");
-        }
+        return false;
+    }
 
-        //Enthält Groß- & Kleinschreibung? -->
+    private static boolean checkUpperLowerCase(char[] inputArr){
         boolean containsUppercase = false;
         boolean containsLowercase = false;
 
@@ -57,16 +70,13 @@ public class PasswordValidation {
         }
 
         if (containsUppercase && containsLowercase) {
-            securityLevelCounter++;
+            return true;
+        } else {
+            return false;
         }
-        else {
-            System.out.println("Ergänze Groß- bzw. Kleinschreibung");
-        }
+    }
 
-        System.out.println("_____________________");
-
-        //Ausgabe Security-Level
-
+    private static String checkSecurityLevel(int securityLevelCounter){
         switch (securityLevelCounter){
             case 0:
                 return "red";
@@ -79,6 +89,5 @@ public class PasswordValidation {
             default:
                 return "Error!";
         }
-
     }
 }

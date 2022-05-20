@@ -36,4 +36,15 @@ class PasswordValidationTest {
         //Then
         assertEquals(expected, actual);
     }
+    @Test
+    void shouldReturnSecurityLevelsForSeveralPasswords(){
+        //Given
+        String[] input = {"P4ssw0rtSecur!ty", "P4ssw0rt", "passwort"};
+        String[][] expected = {{"P4ssw0rtSecur!ty", "green"}, {"P4ssw0rt", "yellow"}, {"passwort", "red"}};
+        //When
+        String[][] actual = PasswordValidation.check(input);
+        //Then
+        assertArrayEquals(expected, actual);
+    }
+
 }
