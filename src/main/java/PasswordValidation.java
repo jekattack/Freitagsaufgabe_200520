@@ -10,31 +10,49 @@
 * * */
 
 
+import java.util.Arrays;
+
 public class PasswordValidation {
-    public static String check(String input) {
-        int securityLevelCounter = 0;
+    public static String[] check(String input) {
+        int securityLevelCounter = 3;
         char[] inputArr = input.toCharArray();
+        String[] checkResult = new String[4];
+        Arrays.fill(checkResult, "");
 
         boolean isLongEnough = PasswordValidation.checkLength(inputArr);
         boolean containsNumber = PasswordValidation.checkSpecialChars(inputArr);
         boolean containsUpperLowerCase = PasswordValidation.checkUpperLowerCase(inputArr);
 
-        if(isLongEnough)securityLevelCounter++;
-        if(containsNumber)securityLevelCounter++;
-        if(containsUpperLowerCase)securityLevelCounter++;
+        if(!isLongEnough){
+            securityLevelCounter--;
+            checkResult[1] = "Passwort ist zu kurz!";
+        }
+        if(!containsNumber){
+            securityLevelCounter--;
+            checkResult[2] = "Passwort enthält keine Zahlen/Sonderzeichen!";
+        }
+        if(!containsUpperLowerCase){
+            securityLevelCounter--;
+            checkResult[3] = "Passwort enthält nur groß bzw. klein geschriebene Buchstaben!";
+        }
 
-        return checkSecurityLevel(securityLevelCounter);
+         checkResult[0] = checkSecurityLevel(securityLevelCounter);
 
+        return checkResult;
     }
 
     public static String[][] check(String[] input){
 
-        String[][] result = new String[input.length][2];
+        String[][] result = new String[input.length][5];
 
         for(int i=0; i < input.length; i++){
             result[i][0] = input[i];
-            result[i][1] = PasswordValidation.check(input[i]);
+            String[] checkResult = PasswordValidation.check(input[i]);
+            for (int j = 0; j < checkResult.length; j++){
+                result[i][1+j] = checkResult[j];
+            }
         }
+        System.out.println(result[0][0]);
 
         return result;
 
