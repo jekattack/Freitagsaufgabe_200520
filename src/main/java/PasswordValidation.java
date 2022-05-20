@@ -11,6 +11,10 @@
 
 
 public class PasswordValidation {
+
+    public static void main(String[] args) {
+
+    }
     public static String check(String input) {
         int securityLevelCounter = 0;
         char[] inputArr = input.toCharArray();
@@ -39,7 +43,6 @@ public class PasswordValidation {
         } else {
             System.out.println("Ergänze mind. eine Zahl und/oder Sonderzeichen");
         }
-
 
         //Enthält Groß- & Kleinschreibung? -->
         boolean containsUppercase = false;
